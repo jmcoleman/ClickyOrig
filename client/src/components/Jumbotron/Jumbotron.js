@@ -5,7 +5,7 @@ const Jumbotron = (props) => (
   <div id="page-header" className="jumbotron text-center">
     <h1>Let's Play</h1>
     <h4>Click on an image to earn points, but don't click on any image more than once!</h4>
-    <div class="message">{props.message}</div>
+    <div className="message">{props.message}</div>
   </div>
 );
 

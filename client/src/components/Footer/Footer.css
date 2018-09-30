@@ -1,4 +1,5 @@
-.heading {
+
+.sticky {
   width: 100%;
   text-align: center;
   font-size: 1.5rem;
@@ -7,4 +8,8 @@
   color: black;
   padding: 0px;
   margin-top: 32px;
+
+  position:fixed;    /*Here's what sticks it*/
+  bottom:0;          /*to the bottom */
+  left:0;            /*and left of the body.*/
 }
