@@ -10,8 +10,28 @@ import "./App.css";
 class App extends Component {
   // Setting this.state.gameImages to the gameImages json array
   state = {
-    gameImages
+    gameImages: gameImages,
+    gameScore: 0,
+    topScore: 0
   };
+
+  componentDidMount() {
+    const shuffledGameImages = this.shuffle(this.state.gameImages);
+
+    this.setState({gameImages: shuffledGameImages})
+  }
+  
+  ///////////////////////////////////////////
+  // Shuffles array in place. ES6 version
+  // @param {Array} 
+  ///////////////////////////////////////////
+  shuffle = (a) => {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
 
   chooseGameImage = id => {
     // Filter this.state.gameImages for gameImages with an id not equal to the id selected
@@ -25,8 +45,8 @@ class App extends Component {
     return (
       <div>
         <Header
-          gameScore={0}
-          topScore={0}
+          gameScore={this.state.gameScore}
+          topScore={this.state.topScore}
         >
           Clicky Game
         </Header>
