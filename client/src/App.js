@@ -8,23 +8,23 @@ import gameImages from "./gameImages.json";
 import "./App.css";
 
 class App extends Component {
-  // Setting this.state.gameImages to the gameImages json array
+
+  ///////////////////////////
+  // handle state
+  ///////////////////////////
+
+  // load the images from the json array
   state = {
     gameImages: gameImages,
     gameScore: 0,
     topScore: 0
   };
 
-  componentDidMount() {
-    const shuffledGameImages = this.shuffle(this.state.gameImages);
+  ///////////////////////////////////////////
+  // Functions
+  ///////////////////////////////////////////
 
-    this.setState({gameImages: shuffledGameImages})
-  }
-  
-  ///////////////////////////////////////////
-  // Shuffles array in place. ES6 version
-  // @param {Array} 
-  ///////////////////////////////////////////
+  // Shuffles array in place. ES6 version.  @param {Array} 
   shuffle = (a) => {
     for (let i = a.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -33,12 +33,51 @@ class App extends Component {
     return a;
   }
 
-  chooseGameImage = id => {
-    // Filter this.state.gameImages for gameImages with an id not equal to the id selected
-    const gameImages = this.state.gameImages.filter(gameImage => gameImage.id !== id);
-    // Set this.state.gameImages equal to the new gameIages array
-    this.setState({ gameImages });
-  };
+  // chooseGameImage = id => {
+  //   // Filter this.state.gameImages for gameImages with an id not equal to the id selected
+  //   const gameImages = this.state.gameImages.filter(gameImage => gameImage.id !== id);
+
+  //   // Set this.state.gameImages equal to the new gameIages array
+  //   this.setState({ gameImages });
+  // };
+
+  /////////////////////////////
+  // methods to update state
+  /////////////////////////////
+  changeGameScore = () => {
+    this.setState((prevState, props) => {
+      return { gameScore: parseInt(prevState.gameScore,10) + 1}
+    })
+  }
+
+  changeShuffledImages = () => {
+    this.setState((prevState, props) => {
+      const shuffledGameImages = this.shuffle(prevState.gameImages);
+
+      return { gameImages: shuffledGameImages}
+    })
+  }
+
+  /////////////////////////////
+  // event handlers
+  /////////////////////////////
+  handleImageSelected = () => {
+    this.changeGameScore();
+
+    //reshuffle images
+    this.changeShuffledImages();
+  }
+
+
+  /////////////////////////////
+  // React methods
+  /////////////////////////////
+
+  componentDidMount() {
+    const shuffledGameImages = this.shuffle(this.state.gameImages);
+
+    this.setState({gameImages: shuffledGameImages})
+  }
 
   // Map over this.state.gameImages and render a GameCard component for each gameImage object
   render() {
@@ -57,11 +96,12 @@ class App extends Component {
         <Wrapper>
           {this.state.gameImages.map(gameImage => (
             <GameCard
-              chooseGameImage={this.chooseGameImage}
+              // chooseGameImage={this.chooseGameImage}
               id={gameImage.id}
               key={gameImage.id}
               name={gameImage.name}
               image={gameImage.image}
+              onClick={this.handleImageSelected}
             />
           ))}
         </Wrapper>
