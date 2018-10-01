@@ -2,11 +2,11 @@ import React from "react";
 import "./Footer.css";
 
 const Footer = (props) => (
-    <footer id="main-footer" className="text-center p-4 sticky bg-clicky">
+    <footer id="main-footer" className="text-center p-0 sticky bg-clicky">
         <div className="container">
             <div className="row">
                 <div className="col">
-                    <p>Copyright &copy;<span id="year"> {props.year}</span></p>
+                    <small className="text-muted">Copyright &copy;<span id="year"> {props.year}</span></small>
                 </div>
             </div>
         </div>

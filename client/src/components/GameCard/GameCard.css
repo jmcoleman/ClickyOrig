@@ -1,9 +1,9 @@
 .card {
   background: #fff;
   border-radius: 2px;
-  height: 150px;
+  height: auto;
   margin: 1rem;
-  width: 150px;
+  width: 20%;
   box-shadow: 0 3px 6px #999, 0 3px 6px #999;
 }
 
@@ -16,9 +16,25 @@
 }
 
 .card > .img-container > img {
-  /* max-width: 100%; */
+  max-width: 100%;
   max-height: 100%;
   height: auto;
   width: auto;
+}
+
+.card > .img-container > img:before {
+  transition: 500ms all linear;
+}
+
+.card > .img-container > img:hover {
+  -webkit-transform: scale(1.1);
+  -moz-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  -o-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+.card > .img-container > img:hover:before {
+  opacity: 1;
 }
 
