@@ -16,6 +16,8 @@ class App extends Component {
   // load the images from the json array
   state = {
     gameImages: gameImages,
+    selectedImages: [],
+    currentImage: null,
     gameScore: 0,
     topScore: 0
   };
@@ -50,6 +52,12 @@ class App extends Component {
     })
   }
 
+  changeTopScore = () => {
+    this.setState((prevState, props) => {
+      return { topScore: parseInt(prevState.topScore,10) + 1}
+    })
+  }
+
   changeShuffledImages = () => {
     this.setState((prevState, props) => {
       const shuffledGameImages = this.shuffle(prevState.gameImages);
@@ -58,16 +66,39 @@ class App extends Component {
     })
   }
 
+  changeSelectedImages = () => {
+    this.setState((prevState, props) => {
+      // return this.setState({ selectedImages: [...this.state.selectedImages, props.id] })
+      return this.setState({ selectedImages: [...prevState.selectedImages, props.id] })
+    })
+  }
+
+  isGameOver = () => {
+    let gameOver=false;
+
+    // game is over when an item has been selected before
+    
+    return gameOver;
+  }
+
   /////////////////////////////
   // event handlers
   /////////////////////////////
-  handleImageSelected = () => {
+  handleImageSelected = (i) => {
     this.changeGameScore();
+    this.changeSelectedImages(i.id);
+
+    // if game is over, check for top score
+    if (this.isGameOver()) {
+      // if this is the top score, set it
+      if (this.state.gameScore > this.state.topScore) {
+        this.changeTopScore(this.state.gameScore);
+      }
+    }
 
     //reshuffle images
     this.changeShuffledImages();
   }
-
 
   /////////////////////////////
   // React methods
@@ -101,7 +132,7 @@ class App extends Component {
               key={gameImage.id}
               name={gameImage.name}
               image={gameImage.image}
-              onClick={this.handleImageSelected}
+              onClick={this.handleImageSelected.bind(this)}
             />
           ))}
         </Wrapper>
