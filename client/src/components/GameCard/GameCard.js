@@ -6,7 +6,7 @@ const GameCard = props => (
     <div className="img-container">
       <img alt={props.name} src={props.image} />
     </div>
-    <span onClick={() => props.chooseGameImage(props.id)} className="choose">
+    <span onClick={() => props.handleImageSelected(props.id)}>
     </span>
   </div>
 );

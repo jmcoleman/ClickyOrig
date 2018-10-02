@@ -16,8 +16,7 @@ class App extends Component {
   // load the images from the json array
   state = {
     gameImages: gameImages,
-    selectedImages: [],
-    currentImage: null,
+    selectedImageIds: [],
     gameScore: 0,
     topScore: 0
   };
@@ -46,18 +45,6 @@ class App extends Component {
   /////////////////////////////
   // methods to update state
   /////////////////////////////
-  changeGameScore = () => {
-    this.setState((prevState, props) => {
-      return { gameScore: parseInt(prevState.gameScore,10) + 1}
-    })
-  }
-
-  changeTopScore = () => {
-    this.setState((prevState, props) => {
-      return { topScore: parseInt(prevState.topScore,10) + 1}
-    })
-  }
-
   changeShuffledImages = () => {
     this.setState((prevState, props) => {
       const shuffledGameImages = this.shuffle(prevState.gameImages);
@@ -66,34 +53,31 @@ class App extends Component {
     })
   }
 
-  changeSelectedImages = () => {
-    this.setState((prevState, props) => {
-      // return this.setState({ selectedImages: [...this.state.selectedImages, props.id] })
-      return this.setState({ selectedImages: [...prevState.selectedImages, props.id] })
-    })
-  }
-
-  isGameOver = () => {
-    let gameOver=false;
-
-    // game is over when an item has been selected before
-    
-    return gameOver;
-  }
-
   /////////////////////////////
   // event handlers
   /////////////////////////////
-  handleImageSelected = (i) => {
-    this.changeGameScore();
-    this.changeSelectedImages(i.id);
+  handleImageSelected = (e, curentImageId) => {
+    console.log(curentImageId);
 
-    // if game is over, check for top score
-    if (this.isGameOver()) {
-      // if this is the top score, set it
-      if (this.state.gameScore > this.state.topScore) {
-        this.changeTopScore(this.state.gameScore);
-      }
+    this.setState( (prevState, props) => ({
+      selectedImageIds: [...prevState.selectedImageIds, curentImageId],
+      gameScore: parseInt(prevState.gameScore,10) + 1,
+    }))
+
+    // if image has already been selected, game is over
+    if (this.state.selectedImageIds.includes(curentImageId)) {
+      console.log("Choosen before!");
+
+      // reset the selected images to be empty and the game score to 0
+      this.setState( (prevState, props) => ({
+        selectedImageIds: [],
+        gameScore: 0,
+      }))
+    } else {
+      // set the top score if the current score beats it
+      this.setState( (prevState, props) => ({
+        topScore: prevState.gameScore >= prevState.topScore ? prevState.gameScore : prevState.topScore
+      }))
     }
 
     //reshuffle images
@@ -132,7 +116,7 @@ class App extends Component {
               key={gameImage.id}
               name={gameImage.name}
               image={gameImage.image}
-              onClick={this.handleImageSelected.bind(this)}
+              onClick={ e => this.handleImageSelected(e, gameImage.id)}
             />
           ))}
         </Wrapper>
